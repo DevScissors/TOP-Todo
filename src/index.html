@@ -10,18 +10,32 @@
       <div class="header-wrapper">
         <div class="header">
           <h1>To Do List</h1>
+          <button type="button">Add New Task</button>
         </div>
       </div>
-      <div class="sidebar-wrapper">
-        <div class="sidebar">
-          <ul>
-            <a href="#"><li>First Menu Item</li></a>
-          </ul>
+      <div class="sidebar-container">
+        <div class="sidebar-wrapper">
+          <div class="all-tasks-menu menu">
+            <a href="#">All Tasks</a>
+          </div>
+          <div class="today-menu menu">
+            <a href="#">Today</a>
+          </div>
+          <div class="upcoming-menu menu">
+            <a href="#">Upcoming</a>
+          </div>
+          <div class="overdue-menu menu">
+            <a href="#">Overdue</a>
+          </div>
+          <div class="archive-menu menu">
+            <a href="#">Archive</a>
+          </div>
         </div>
       </div>
       <div class="todo-list-container">
         <div class="todo-list-wrapper">
           <div class="list-item-categories">
+            <div class="checkbox-select"><input type="checkbox" /></div>
             <div class="project-name">Category/Project Name</div>
             <div class="task-name">Task Name</div>
             <div class="priority-status">Priority</div>
@@ -30,6 +44,7 @@
             <div class="created-date">Created On</div>
           </div>
           <div class="todo-list-items">
+            <div class="completion-toggle"><input type="checkbox" /></div>
             <div class="project-name">House</div>
             <div class="task-name">Clean bedroom</div>
             <div class="priority-status">Normal</div>
