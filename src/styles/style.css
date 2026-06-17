@@ -1,0 +1,41 @@
+.main-container {
+    border: 1px solid red;
+    display: grid;
+    grid-template: 1fr 5fr / 1fr 5fr;
+    min-height: 95vh;
+}
+
+.sidebar-wrapper {
+    padding: 10px;
+    grid-column: 1;
+    border: 1px solid blue;
+    grid-row: 1 / 5;
+}
+
+.header-wrapper {
+    padding: 10px;
+    grid-column: 2 / 5;
+    border: 1px solid black;
+}
+
+.todo-list-container {
+    padding: 10px;
+    border: 1px solid green;
+}
+
+.todo-list-wrapper {
+    display: grid;
+    padding: 20px;
+}
+
+.list-item-categories {
+    background-color: lightgray;
+}
+
+.list-item-categories,
+.todo-list-items {
+    padding: 20px;
+    border: 1px solid black;
+    display: grid;
+    grid-template: 1fr / repeat(6, 1fr);
+}
