@@ -1,9 +1,30 @@
+:root {
+    --text-color: #E9E6E7;
+    --bg-color: #AB978C;
+    --cell-bg-color: #5E5653;
+}
+
+body {
+    margin: 0;
+}
+
+.new-task-btn {
+    background-color: var(--bg-color);
+    color: white;
+    font-size: larger;
+    border-radius: 5px;
+}
+
+.new-task-btn:hover {
+    transform:scale(1.1);
+    filter: drop-shadow(2px 2px 5px black);
+}
+
 .main-container {
-    border: 1px solid red;
     display: grid;
     grid-template: 10vh 5fr / 10vw 5fr;
     min-height: 95vh;
-    background: linear-gradient(0deg, gray, white);
+    background-color: var(--bg-color);
 }
 
 a {
@@ -14,30 +35,21 @@ a:link, a:visited {
     color: black;
 }
 
+.menu-title {
+    color: var(--text-color);
+}
+
 .menu svg {
-    fill: black;
+    fill: var(--text-color);
     width: 1.2em;
     vertical-align: bottom;
 }
 
-.active .menu-title {
-    color: white;
-}
-
 .menu:hover, .active {
-    color: white;
-    transform:scale(1.1);
+    transform:scale(1.2);
     filter: drop-shadow(2px 2px 2px black);
     paint-order: stroke fill;
-    -webkit-text-stroke: 1px lightgray;
-}
-
-.menu:hover svg {
-    fill: white;
-}
-
-.active svg * {
-    fill: white;
+    -webkit-text-stroke: 1px #7f7b7f;
 }
 
 .sidebar-container {
@@ -58,41 +70,73 @@ a:link, a:visited {
 .header-wrapper {
     padding: 10px;
     grid-column: 2 / 5;
-    border: 1px solid black;
 }
 
 .todo-list-container {
-    padding: 10px;
-    border: 1px solid green;
-}
-
-.todo-list-wrapper {
-    display: grid;
-    padding: 20px;
+    height: fit-content;
+    border-collapse: separate;
+    border-spacing: 0 1.5em;
 }
 
 .list-item-categories {
+    text-align: left;
+}
+
+table tbody input[type="checkbox"] {
+    width: 2em;
+    height: 2em;
+    margin-left: 1em;
+}
+
+tbody {
+    vertical-align: baseline;
+    color: var(--text-color);
+}
+
+table th {
+    padding: 1em 0;
+    color: var(--bg-color);
+    filter: drop-shadow(2px 2px 4px black);
+    text-decoration: underline;
+    text-underline-offset: 5px;
     font-weight: bold;
-    background-color: lightgray;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: none;
 }
 
-.list-item-categories,
-.todo-list-items {
-    padding: 20px;
-    display: grid;
-    grid-template: 1fr / 50px repeat(7, 1fr);
+table tbody tr td, table tr {
+    padding: 1em 0;
+    filter: drop-shadow(2px 2px 4px black);
 }
 
-.todo-list-items {
-    border:1px solid black;
+table {
+    border-spacing: 0 2.5em;
+}
+
+table tr{
+    font-size: x-large;
+    font-weight: normal;
+    background-color: #5E5653;
+    filter: drop-shadow(2px 2px 2px black);
 }
 
 .task-options-wrapper {
     display: flex;
     gap: 10px;
-    justify-content: flex-end;
+    justify-content: flex-start;
+}
+
+.task-options-wrapper svg {
+    width: 1.2em;
+    fill: var(--text-color);
+}
+
+.task-option:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(2px 2px 2px black);
+} 
+
+.footer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5vh;
 }
