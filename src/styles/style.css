@@ -8,11 +8,17 @@ body {
     margin: 0;
 }
 
+.header-wrapper {
+    padding: 10px 10px 10px 0;
+    grid-column: 2 / 5;
+}
+
 .new-task-btn {
     background-color: var(--bg-color);
     color: white;
     font-size: larger;
     border-radius: 5px;
+    padding: 10px;
 }
 
 .new-task-btn:hover {
@@ -67,11 +73,6 @@ a:link, a:visited {
     gap: 20px;
 }
 
-.header-wrapper {
-    padding: 10px;
-    grid-column: 2 / 5;
-}
-
 .todo-list-container {
     height: fit-content;
     border-collapse: separate;
@@ -86,6 +87,8 @@ table tbody input[type="checkbox"] {
     width: 2em;
     height: 2em;
     margin-left: 1em;
+    accent-color: white;
+    cursor: pointer;
 }
 
 tbody {
