@@ -4,6 +4,12 @@
     --cell-bg-color: #5E5653;
 }
 
+.app-title {
+    font-size: xx-large;
+    color: var(--text-color);
+    filter: drop-shadow(2px 2px 2px black);
+}
+
 body {
     margin: 0;
 }
@@ -14,16 +20,18 @@ body {
 }
 
 .new-task-btn {
-    background-color: var(--bg-color);
+    background: var(--bg-color);
     color: white;
     font-size: larger;
     border-radius: 5px;
     padding: 10px;
+    outline-offset: 4px;
+    filter: drop-shadow(2px 2px 2px black);
 }
 
-.new-task-btn:hover {
-    transform:scale(1.1);
-    filter: drop-shadow(2px 2px 5px black);
+.new-task-btn:active {
+    filter: none;
+    box-shadow: inset 1px 1px black;
 }
 
 .main-container {
@@ -119,6 +127,7 @@ table tr{
     font-weight: normal;
     background-color: #5E5653;
     filter: drop-shadow(2px 2px 2px black);
+    vertical-align: middle;
 }
 
 .task-options-wrapper {
@@ -135,6 +144,7 @@ table tr{
 .task-option:hover {
     transform: scale(1.2);
     filter: drop-shadow(2px 2px 2px black);
+    cursor: pointer;
 } 
 
 .footer-wrapper {
