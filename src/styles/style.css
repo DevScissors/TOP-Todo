@@ -1,7 +1,16 @@
 :root {
     --text-color: #E9E6E7;
+    /* --text-color: #6D8BC0; */
     --bg-color: #AB978C;
-    --cell-bg-color: #5E5653;
+    --bg-color: white;
+    --cell-bg-color: black;
+}
+
+.main-container {
+    display: grid;
+    grid-template: 10vh 5fr / 10vw 5fr;
+    min-height: 95vh;
+    background: linear-gradient(gray, transparent);
 }
 
 .app-title {
@@ -20,25 +29,21 @@ body {
 }
 
 .new-task-btn {
-    background: var(--bg-color);
+    background: var(--cell-bg-color);
     color: white;
     font-size: larger;
     border-radius: 5px;
     padding: 10px;
     outline-offset: 4px;
-    filter: drop-shadow(2px 2px 2px black);
+    filter: none;
+    box-shadow: inset 1px 1px white;
 }
 
 .new-task-btn:active {
-    filter: none;
-    box-shadow: inset 1px 1px black;
-}
-
-.main-container {
-    display: grid;
-    grid-template: 10vh 5fr / 10vw 5fr;
-    min-height: 95vh;
-    background-color: var(--bg-color);
+    filter: drop-shadow(2px 2px 2px white);
+    box-shadow: none;
+    transform: scale(.95);
+    
 }
 
 a {
@@ -83,8 +88,8 @@ a:link, a:visited {
 
 .todo-list-container {
     height: fit-content;
-    border-collapse: separate;
     border-spacing: 0 1.5em;
+    padding-right: 20px;
 }
 
 .list-item-categories {
@@ -102,31 +107,32 @@ table tbody input[type="checkbox"] {
 tbody {
     vertical-align: baseline;
     color: var(--text-color);
+    filter: drop-shadow(2px 4px 0px black)
+}
+
+table thead {
+    filter: drop-shadow(2px 4px 0px black);
 }
 
 table th {
     padding: 1em 0;
-    color: var(--bg-color);
-    filter: drop-shadow(2px 2px 4px black);
+    color: var(--text-color);
     text-decoration: underline;
     text-underline-offset: 5px;
     font-weight: bold;
+    background-color: var(--cell-bg-color);
 }
 
 table tbody tr td, table tr {
     padding: 1em 0;
-    filter: drop-shadow(2px 2px 4px black);
-}
-
-table {
-    border-spacing: 0 2.5em;
+    filter: drop-shadow(2px 2px 2px black);
 }
 
 table tr{
     font-size: x-large;
     font-weight: normal;
-    background-color: #5E5653;
-    filter: drop-shadow(2px 2px 2px black);
+    background-color: var(--cell-bg-color);
+    filter: drop-shadow(2px 4px 6px black);
     vertical-align: middle;
 }
 

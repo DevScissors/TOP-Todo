@@ -11,6 +11,45 @@
         <div class="header">
           <h1 class="app-title">To Do List</h1>
           <button type="button" class="new-task-btn">Add Task</button>
+          <dialog id="addNewTask" closedby="any">
+            <form action="#" method="dialog" class="add-task-form">
+              <label for="taskNameInput">
+                Task Name:
+                <input
+                  type="text"
+                  id="taskNameInput"
+                  class="task-name-input"
+                  required
+                />
+              </label>
+              <label for="taskCategoryInput">
+                Category:
+                <input
+                  type="text"
+                  id="taskCategoryInput"
+                  class="task-category-input"
+                  required
+                />
+              </label>
+              <label for="taskPrioritySelect">
+                Priority:
+                <select
+                  id="taskPrioritySelect"
+                  class="task-priority-select"
+                  required
+                >
+                  <option>Low</option>
+                  <option>Normal</option>
+                  <option>High</option>
+                </select>
+              </label>
+              <label for="dueByInput">
+                Due By:
+                <input type="date" id="dueByInput" class="due-by-date-input" />
+              </label>
+              <button type="submit" class="submit-btn">Add Task</button>
+            </form>
+          </dialog>
         </div>
       </div>
       <div class="sidebar-container">
@@ -69,7 +108,9 @@
         <thead class="list-item-categories">
           <tr>
             <th></th>
-            <th class="task-name table-title">Task Name</th>
+            <th class="task-name table-title">
+              <span class="cell-text">Task Name</span>
+            </th>
             <th class="project-name table-title">Category/Project Name</th>
             <th class="priority-status table-title">Priority</th>
             <th class="due-by-date table-title">Due By</th>
