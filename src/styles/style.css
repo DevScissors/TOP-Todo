@@ -1,9 +1,8 @@
 :root {
     --text-color: #E9E6E7;
-    /* --text-color: #6D8BC0; */
     --bg-color: #AB978C;
     --bg-color: white;
-    --cell-bg-color: black;
+    --cell-bg-color: #565656;
 }
 
 .main-container {
