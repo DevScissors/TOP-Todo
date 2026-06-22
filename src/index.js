@@ -1,5 +1,7 @@
 import "./styles/style.css";
-import taskOptionsSVGs from "./taskOptionsSVGs";
+import taskOptionsSVGs from "./components/taskOptionsSVGs";
+import ToDo from "./models/ToDo";
+import { formatDateTime, formatDate } from "./utils/dateFormatter";
 
 let taskList = [];
 
@@ -13,18 +15,6 @@ const taskNameInput = document.querySelector(".task-name-input");
 const taskCategoryInput = document.querySelector(".task-category-input");
 const taskPrioritySelection = document.querySelector(".task-priority-select");
 const taskDueDateInput = document.querySelector(".task-due-by-date-input");
-
-class ToDo {
-  constructor(name, category, priority, dueDate, status, createdDate, id) {
-    this.name = name;
-    this.category = category;
-    this.priority = priority;
-    this.dueDate = new Date();
-    this.status = status;
-    this.createdDate = createdDate;
-    this.id = crypto.randomUUID();
-  }
-}
 
 function addTaskToList() {
   const taskNameValue = taskNameInput.value;
@@ -66,14 +56,12 @@ function displayTaskList() {
     taskCategoryCol.textContent = task.category;
 
     const taskPriorityCol = document.createElement("td");
-    taskPriorityCol.classList.add("task-priority-select", "table-item");
-    taskPriorityCol.textContent = task.priority.value;
+    taskPriorityCol.classList.add("task-priority-status", "table-item");
+    taskPriorityCol.textContent = task.priority;
 
     const taskDueDateCol = document.createElement("td");
     taskDueDateCol.classList.add("task-due-date", "table-item");
-    taskDueDateCol.textContent = new Intl.DateTimeFormat("en-us").format(
-      task.dueDate,
-    );
+    taskDueDateCol.textContent = formatDateTime(task.dueDate);
 
     const taskStatusCol = document.createElement("td");
     taskStatusCol.classList.add("task-status", "table-item");
@@ -81,9 +69,7 @@ function displayTaskList() {
 
     const taskCreatedDateCol = document.createElement("td");
     taskCreatedDateCol.classList.add("task-created-date", "table-item");
-    taskCreatedDateCol.textContent = new Intl.DateTimeFormat("en-us").format(
-      task.createdDate,
-    );
+    taskCreatedDateCol.textContent = formatDateTime(task.createdDate);
 
     taskColCompletionCheckbox.appendChild(taskCheckboxInput);
 
