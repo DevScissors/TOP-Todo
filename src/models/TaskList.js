@@ -35,7 +35,8 @@ function emptyTaskListMessage() {
   const emptyMessage = document.createElement("div");
   emptyMessage.classList.add("empty-task-list-message");
   emptyMessage.style.cssText = "text-align: center; font-size: 36px;";
-  emptyMessage.textContent = "You really have nothing to do?!?!";
+  emptyMessage.textContent =
+    "No tasks added yet. I'm sure you have something to do...";
 
   todoListContainer.appendChild(emptyMessage);
   return todoListContainer;
@@ -45,16 +46,18 @@ export function displayTaskList() {
   const emptyListMessage = document.querySelector(".empty-task-list-message");
   taskTableBody.innerHTML = "";
 
-  // Check if the user has any tasks in local storage
+  // Check if the user has any tasks in local storage, eventually
   if (taskList.length === 0) {
     taskTable.classList.add("hidden");
-    todoListContainer.appendChild(emptyTaskListMessage());
+    emptyTaskListMessage();
     return;
+  } else {
+    taskTable.classList.remove("hidden");
+    emptyListMessage.classList.add("hidden");
   }
-  taskTable.classList.remove("hidden");
-  emptyListMessage.classList.add("hidden");
   taskList.forEach((task) => {
     const taskRow = document.createElement("tr");
+    taskRow.classList.add("task-item-row");
     taskRow.setAttribute("data-index", task.id);
 
     const taskColCompletionCheckbox = document.createElement("td");

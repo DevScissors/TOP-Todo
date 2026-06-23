@@ -3,6 +3,7 @@ import { addTaskToList, displayTaskList } from "./models/TaskList.js";
 
 const navItems = document.querySelectorAll(".menu");
 const modal = document.querySelector("#addNewTask");
+const formModal = document.querySelector(".add-task-form");
 const addTaskBtn = document.querySelector(".new-task-btn");
 const submitTaskBtn = document.querySelector(".submit-task-btn");
 
@@ -15,6 +16,10 @@ navItems.forEach((menuItem) => {
 
 addTaskBtn.addEventListener("click", () => {
   modal.showModal();
+});
+
+modal.addEventListener("close", () => {
+  formModal.reset();
 });
 
 submitTaskBtn.addEventListener("click", () => {
