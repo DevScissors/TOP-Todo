@@ -85,10 +85,23 @@ a:link, a:visited {
     gap: 20px;
 }
 
-.todo-list-container {
+.todo-list-table {
     height: fit-content;
     border-spacing: 0 1.5em;
     padding-right: 20px;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.empty-task-list-message {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--text-color);
+    margin: 2rem auto;
+    max-width: 80%;
 }
 
 .list-item-categories {
