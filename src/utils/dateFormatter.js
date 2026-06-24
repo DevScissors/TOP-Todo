@@ -35,3 +35,19 @@ export function formatDate(date) {
 
   return `${month}/${day}/${year}`;
 }
+
+export function todaysDate() {
+  const dueDateInput = document.querySelector(".task-due-by-date-input");
+
+  const now = new Date();
+
+  // Format to YYYY-MM-DDTHH:mm manually to avoid UTC offset shifts
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+
+  const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+  return minDateTime;
+}

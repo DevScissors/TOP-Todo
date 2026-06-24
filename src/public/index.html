@@ -54,6 +54,49 @@
               <button type="submit" class="submit-task-btn">Add Task</button>
             </form>
           </dialog>
+          <dialog id="editTask" closedby="any">
+            <form action="#" method="dialog" class="edit-task-form">
+              <label for="taskNameInput">
+                Task Name:
+                <input
+                  type="text"
+                  id="taskNameInput"
+                  class="task-name-input"
+                  required
+                />
+              </label>
+              <label for="taskCategoryInput">
+                Category:
+                <input
+                  type="text"
+                  id="taskCategoryInput"
+                  class="task-category-input"
+                  required
+                />
+              </label>
+              <label for="taskPrioritySelect">
+                Priority:
+                <select
+                  id="taskPrioritySelect"
+                  class="task-priority-select"
+                  required
+                >
+                  <option value="Low">Low</option>
+                  <option value="Normal">Normal</option>
+                  <option value="High">High</option>
+                </select>
+              </label>
+              <label for="dueByInput">
+                Due By:
+                <input
+                  type="datetime-local"
+                  id="dueByInput"
+                  class="task-due-by-date-input"
+                />
+              </label>
+              <button type="submit" class="edit-task-btn">Update Task</button>
+            </form>
+          </dialog>
         </div>
       </div>
       <div class="sidebar-container">

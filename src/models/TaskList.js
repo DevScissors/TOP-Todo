@@ -4,6 +4,8 @@ import { formatDateTime, formatDate } from "../utils/dateFormatter.js";
 import {
   addTaskToLocalStorage,
   checkLocalStorageForTasks,
+  clearTaskFromLocalStorage,
+  editTaskFromLocalStorage,
 } from "../services/localStorage.js";
 
 export let taskList = [];
@@ -23,6 +25,7 @@ export function addTaskToList() {
   const taskDueDateValue = taskDueDateInput.value;
   const taskDefaultStatusValue = "Not Completed";
   const taskCreatedDate = new Date();
+  const taskArchived = false;
 
   const toDoTask = new ToDo(
     taskNameValue,
@@ -31,6 +34,7 @@ export function addTaskToList() {
     taskDueDateValue,
     taskDefaultStatusValue,
     taskCreatedDate,
+    taskArchived,
   );
   taskList.push(toDoTask);
   addTaskToLocalStorage();
@@ -90,6 +94,7 @@ export function displayTaskList() {
 
     const taskDueDateCol = document.createElement("td");
     taskDueDateCol.classList.add("task-due-date", "table-item");
+    taskValues.dueDate = new Date(taskValues.dueDate);
     taskDueDateCol.textContent = formatDateTime(taskValues.dueDate);
 
     const taskStatusCol = document.createElement("td");
@@ -98,6 +103,7 @@ export function displayTaskList() {
 
     const taskCreatedDateCol = document.createElement("td");
     taskCreatedDateCol.classList.add("task-created-date", "table-item");
+    taskValues.createdDate = new Date(taskValues.createdDate);
     taskCreatedDateCol.textContent = formatDateTime(taskValues.createdDate);
 
     taskColCompletionCheckbox.appendChild(taskCheckboxInput);
@@ -114,5 +120,37 @@ export function displayTaskList() {
     );
 
     taskTableBody.appendChild(taskRow);
+
+    const archiveTaskBtn = taskRow.querySelector(".archive-task");
+    const deleteTaskBtn = taskRow.querySelector(".delete-task");
+    const editTaskBtn = taskRow.querySelector(".edit-task");
+
+    archiveTaskBtn.addEventListener("click", (e) => {
+      const taskToArchiveByRow = e.currentTarget.closest(".task-item-row");
+      taskToArchiveByRow.classList.add("archived-task");
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        const value = JSON.parse(localStorage.getItem(key));
+
+        if ((value.id = taskToArchiveByRow.dataset.index)) {
+          value.archived = true;
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+      }
+    });
+
+    deleteTaskBtn.addEventListener("click", (e) => {
+      const indexOfTaskToRemove =
+        e.currentTarget.closest(".task-item-row").dataset.index;
+      clearTaskFromLocalStorage(indexOfTaskToRemove);
+      displayTaskList();
+    });
+
+    editTaskBtn.addEventListener("click", (e) => {
+      const indexOfTaskToEdit =
+        e.currentTarget.closest(".task-item-row").dataset.index;
+      editTaskFromLocalStorage(indexOfTaskToEdit);
+      displayTaskList();
+    });
   }
 }
