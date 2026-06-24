@@ -1,5 +1,6 @@
 import "./styles/style.css";
 import { addTaskToList, displayTaskList } from "./models/TaskList.js";
+import { checkLocalStorageForTasks } from "./services/localStorage.js";
 
 const navItems = document.querySelectorAll(".menu");
 const modal = document.querySelector("#addNewTask");

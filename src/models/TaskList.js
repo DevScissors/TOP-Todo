@@ -1,6 +1,10 @@
 import ToDo from "./ToDo.js";
 import taskOptionsSVGs from "../components/taskOptionsSVGs.js";
 import { formatDateTime, formatDate } from "../utils/dateFormatter.js";
+import {
+  addTaskToLocalStorage,
+  checkLocalStorageForTasks,
+} from "../services/localStorage.js";
 
 export let taskList = [];
 
@@ -29,6 +33,7 @@ export function addTaskToList() {
     taskCreatedDate,
   );
   taskList.push(toDoTask);
+  addTaskToLocalStorage();
 }
 
 function emptyTaskListMessage() {
@@ -43,22 +48,27 @@ function emptyTaskListMessage() {
 }
 
 export function displayTaskList() {
-  const emptyListMessage = document.querySelector(".empty-task-list-message");
   taskTableBody.innerHTML = "";
 
   // Check if the user has any tasks in local storage, eventually
-  if (taskList.length === 0) {
+  if (localStorage.length === 0) {
     taskTable.classList.add("hidden");
     emptyTaskListMessage();
     return;
   } else {
+    const emptyListMessage = document.querySelector(".empty-task-list-message");
     taskTable.classList.remove("hidden");
-    emptyListMessage.classList.add("hidden");
+    if (emptyListMessage) {
+      emptyListMessage.classList.add("hidden");
+    }
   }
-  taskList.forEach((task) => {
+  checkLocalStorageForTasks();
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const taskValues = JSON.parse(localStorage.getItem(key));
     const taskRow = document.createElement("tr");
     taskRow.classList.add("task-item-row");
-    taskRow.setAttribute("data-index", task.id);
+    taskRow.setAttribute("data-index", taskValues.id);
 
     const taskColCompletionCheckbox = document.createElement("td");
     taskColCompletionCheckbox.classList.add("completion-toggle", "table-item");
@@ -68,27 +78,27 @@ export function displayTaskList() {
 
     const taskNameCol = document.createElement("td");
     taskNameCol.classList.add("task-name", "table-item");
-    taskNameCol.textContent = task.name;
+    taskNameCol.textContent = taskValues.name;
 
     const taskCategoryCol = document.createElement("td");
     taskCategoryCol.classList.add("task-category", "table-item");
-    taskCategoryCol.textContent = task.category;
+    taskCategoryCol.textContent = taskValues.category;
 
     const taskPriorityCol = document.createElement("td");
     taskPriorityCol.classList.add("task-priority-status", "table-item");
-    taskPriorityCol.textContent = task.priority;
+    taskPriorityCol.textContent = taskValues.priority;
 
     const taskDueDateCol = document.createElement("td");
     taskDueDateCol.classList.add("task-due-date", "table-item");
-    taskDueDateCol.textContent = formatDateTime(task.dueDate);
+    taskDueDateCol.textContent = formatDateTime(taskValues.dueDate);
 
     const taskStatusCol = document.createElement("td");
     taskStatusCol.classList.add("task-status", "table-item");
-    taskStatusCol.textContent = task.status;
+    taskStatusCol.textContent = taskValues.status;
 
     const taskCreatedDateCol = document.createElement("td");
     taskCreatedDateCol.classList.add("task-created-date", "table-item");
-    taskCreatedDateCol.textContent = formatDateTime(task.createdDate);
+    taskCreatedDateCol.textContent = formatDateTime(taskValues.createdDate);
 
     taskColCompletionCheckbox.appendChild(taskCheckboxInput);
 
@@ -104,5 +114,5 @@ export function displayTaskList() {
     );
 
     taskTableBody.appendChild(taskRow);
-  });
+  }
 }
