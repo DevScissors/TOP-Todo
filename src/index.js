@@ -1,6 +1,9 @@
 import "./styles/style.css";
 import { addTaskToList, displayTaskList } from "./models/TaskList.js";
-import { checkLocalStorageForTasks } from "./services/localStorage.js";
+import {
+  addTaskToLocalStorage,
+  checkLocalStorageForTasks,
+} from "./services/localStorage.js";
 import { todaysDate } from "./utils/dateFormatter.js";
 
 const navItems = document.querySelectorAll(".menu");

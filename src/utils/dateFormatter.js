@@ -1,5 +1,8 @@
 export function formatDateTime(date, dateOrder = "MM/DD/YYYY") {
   if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+  if (!(date instanceof Date) || isNaN(date)) {
     return "";
   }
 
@@ -13,7 +16,7 @@ export function formatDateTime(date, dateOrder = "MM/DD/YYYY") {
 
   const formattedDate =
     dateOrder === "YYYY/MM/DD"
-      ? `${year}/${month}/${day}`
+      ? `${year}-${month}-${day}`
       : `${month}/${day}/${year}`;
 
   return `${formattedDate} ${hours}:${minutes} ${ampm}`;
@@ -21,6 +24,9 @@ export function formatDateTime(date, dateOrder = "MM/DD/YYYY") {
 
 export function formatDate(date, dateOrder = "MM/DD/YYYY") {
   if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+  if (!(date instanceof Date) || isNaN(date)) {
     return "";
   }
 

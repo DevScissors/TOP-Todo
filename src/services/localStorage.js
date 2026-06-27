@@ -1,63 +1,71 @@
-import { addTaskToList, displayTaskList, taskList } from "../models/TaskList";
-import { formatDate, todaysDate } from "../utils/dateFormatter";
+import { addTaskToList, displayTaskList } from "../models/TaskList";
+import { formatDateTime, todaysDate } from "../utils/dateFormatter";
 
-export function checkLocalStorageForTasks() {
-  if (!localStorage.length) {
-    return;
+const taskList = checkLocalStorageForExistingTasks()
+  ? JSON.parse(localStorage.getItem("taskList"))
+  : [];
+
+export function checkLocalStorageForExistingTasks() {
+  if (!localStorage.getItem("taskList")) {
+    return false;
   }
-  for (let i = 0; i < localStorage.length; i++) {
-    taskList.push[i];
-  }
+  return true;
 }
 
-export function addTaskToLocalStorage() {
-  for (let i = 0; i < taskList.length; i++) {
-    localStorage.setItem(taskList[i].name, JSON.stringify(taskList[i]));
-  }
+export function addTaskToArchive(taskToArchive) {
+  const task = taskList.find((item) => item.id === taskToArchive);
+  if (!task) return;
+
+  task.archived = true;
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+}
+
+export function addTaskToLocalStorage(taskItem) {
+  taskList.push(taskItem);
+  localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
 export function clearTaskFromLocalStorage(targetValue) {
-  for (let i = localStorage.length - 1; i >= 0; i--) {
-    const key = localStorage.key(i);
-    const value = JSON.parse(localStorage.getItem(key));
-
-    if (value.id === targetValue) {
-      localStorage.removeItem(key);
+  taskList.forEach((task, index) => {
+    if (task.id === targetValue) {
+      taskList.splice(index, 1);
     }
-  }
+  });
+  localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
 export function editTaskFromLocalStorage(taskToEdit) {
   const modal = document.querySelector("#editTask");
-  const nameField = modal.querySelector(".task-name-input");
-  const categoryField = modal.querySelector(".task-category-input");
-  const priorityField = modal.querySelector(".task-priority-select");
-  const dueDateField = modal.querySelector(".task-due-by-date-input");
-  const editTaskBtn = modal.querySelector(".edit-task-btn");
+  const nameField = modal.querySelector(".edit-task-name-input");
+  const categoryField = modal.querySelector(".edit-task-category-input");
+  const priorityField = modal.querySelector(".edit-task-priority-select");
+  const dueDateField = modal.querySelector(".edit-task-due-by-date-input");
+  const updateTaskBtn = modal.querySelector(".update-task-btn");
 
   dueDateField.setAttribute("min", todaysDate());
 
-  for (let i = localStorage.length - 1; i >= 0; i--) {
-    const key = localStorage.key(i);
-    const value = JSON.parse(localStorage.getItem(key));
+  const task = taskList.find((item) => item.id === taskToEdit);
+  if (!task) return;
 
-    nameField.value = value.name;
-    categoryField.value = value.category;
-    priorityField.value = value.priority;
-    dueDateField.value = formatDate(value.dueDate);
+  nameField.value = task.name;
+  categoryField.value = task.category;
+  priorityField.value = task.priority;
+  dueDateField.value = task.dueDate || "";
 
-    modal.showModal();
+  modal.showModal();
 
-    editTaskBtn.addEventListener("click", () => {
-      const editedValues = {
-        ...value,
-        name: nameField.value,
-        category: categoryField.value,
-        priority: priorityField.value,
-        dueDate: dueDateField.value,
-      };
-      localStorage.setItem(key, JSON.stringify(editedValues));
+  updateTaskBtn.addEventListener(
+    "click",
+    () => {
+      task.name = nameField.value;
+      task.category = categoryField.value;
+      task.priority = priorityField.value;
+      task.dueDate = dueDateField.value;
+
+      localStorage.setItem("taskList", JSON.stringify(taskList));
       displayTaskList();
-    });
-  }
+      modal.close();
+    },
+    { once: true },
+  );
 }

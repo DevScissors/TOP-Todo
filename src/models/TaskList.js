@@ -3,12 +3,11 @@ import taskOptionsSVGs from "../components/taskOptionsSVGs.js";
 import { formatDateTime, formatDate } from "../utils/dateFormatter.js";
 import {
   addTaskToLocalStorage,
-  checkLocalStorageForTasks,
+  addTaskToArchive,
+  checkLocalStorageForExistingTasks,
   clearTaskFromLocalStorage,
   editTaskFromLocalStorage,
 } from "../services/localStorage.js";
-
-export let taskList = [];
 
 const taskTable = document.querySelector(".todo-list-table");
 const taskTableBody = document.querySelector("tbody");
@@ -36,8 +35,7 @@ export function addTaskToList() {
     taskCreatedDate,
     taskArchived,
   );
-  taskList.push(toDoTask);
-  addTaskToLocalStorage();
+  addTaskToLocalStorage(toDoTask);
 }
 
 function emptyTaskListMessage() {
@@ -55,7 +53,7 @@ export function displayTaskList() {
   taskTableBody.innerHTML = "";
 
   // Check if the user has any tasks in local storage, eventually
-  if (localStorage.length === 0) {
+  if (!checkLocalStorageForExistingTasks()) {
     taskTable.classList.add("hidden");
     emptyTaskListMessage();
     return;
@@ -65,13 +63,16 @@ export function displayTaskList() {
   if (emptyListMessage) {
     emptyListMessage.classList.add("hidden");
   }
-  checkLocalStorageForTasks();
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    const taskValues = JSON.parse(localStorage.getItem(key));
+
+  const taskListValues = JSON.parse(localStorage.getItem("taskList"));
+
+  taskListValues.forEach((task, index) => {
+    // for (let i = 0; i < localStorage.length; i++) {
+    // const key = localStorage.key(i);
+    // const taskValues = JSON.parse(localStorage.getItem(key));
     const taskRow = document.createElement("tr");
     taskRow.classList.add("task-item-row");
-    taskRow.setAttribute("data-index", taskValues.id);
+    taskRow.setAttribute("data-index", task.id);
 
     const taskColCompletionCheckbox = document.createElement("td");
     taskColCompletionCheckbox.classList.add("completion-toggle", "table-item");
@@ -81,29 +82,28 @@ export function displayTaskList() {
 
     const taskNameCol = document.createElement("td");
     taskNameCol.classList.add("task-name", "table-item");
-    taskNameCol.textContent = taskValues.name;
+    taskNameCol.textContent = task.name;
 
     const taskCategoryCol = document.createElement("td");
     taskCategoryCol.classList.add("task-category", "table-item");
-    taskCategoryCol.textContent = taskValues.category;
+    taskCategoryCol.textContent = task.category;
 
     const taskPriorityCol = document.createElement("td");
     taskPriorityCol.classList.add("task-priority-status", "table-item");
-    taskPriorityCol.textContent = taskValues.priority;
+    taskPriorityCol.textContent = task.priority;
 
     const taskDueDateCol = document.createElement("td");
     taskDueDateCol.classList.add("task-due-date", "table-item");
-    taskValues.dueDate = new Date(taskValues.dueDate);
-    taskDueDateCol.textContent = formatDateTime(taskValues.dueDate);
+    taskDueDateCol.textContent = formatDateTime(task.dueDate);
 
     const taskStatusCol = document.createElement("td");
     taskStatusCol.classList.add("task-status", "table-item");
-    taskStatusCol.textContent = taskValues.status;
+    taskStatusCol.textContent = task.status;
 
     const taskCreatedDateCol = document.createElement("td");
     taskCreatedDateCol.classList.add("task-created-date", "table-item");
-    taskValues.createdDate = new Date(taskValues.createdDate);
-    taskCreatedDateCol.textContent = formatDateTime(taskValues.createdDate);
+    task.createdDate = new Date(task.createdDate);
+    taskCreatedDateCol.textContent = formatDateTime(task.createdDate);
 
     taskColCompletionCheckbox.appendChild(taskCheckboxInput);
 
@@ -127,15 +127,7 @@ export function displayTaskList() {
     archiveTaskBtn.addEventListener("click", (e) => {
       const taskToArchiveByRow = e.currentTarget.closest(".task-item-row");
       taskToArchiveByRow.classList.add("archived-task");
-      for (let i = localStorage.length - 1; i >= 0; i--) {
-        const key = localStorage.key(i);
-        const value = JSON.parse(localStorage.getItem(key));
-
-        if ((value.id = taskToArchiveByRow.dataset.index)) {
-          value.archived = true;
-          localStorage.setItem(key, JSON.stringify(value));
-        }
-      }
+      addTaskToArchive(taskToArchiveByRow.dataset.index);
     });
 
     deleteTaskBtn.addEventListener("click", (e) => {
@@ -151,5 +143,5 @@ export function displayTaskList() {
       editTaskFromLocalStorage(indexOfTaskToEdit);
       displayTaskList();
     });
-  }
+  });
 }
