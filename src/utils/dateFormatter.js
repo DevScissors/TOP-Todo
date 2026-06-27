@@ -1,9 +1,4 @@
-/**
- * Format a Date object as DD/MM/YYYY hh:mm
- * @param {Date} date - The date to format
- * @returns {string} Formatted date string
- */
-export function formatDateTime(date) {
+export function formatDateTime(date, dateOrder = "MM/DD/YYYY") {
   if (!(date instanceof Date)) {
     return "";
   }
@@ -16,15 +11,15 @@ export function formatDateTime(date) {
   const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12 || 12;
 
-  return `${month}/${day}/${year} ${hours}:${minutes} ${ampm}`;
+  const formattedDate =
+    dateOrder === "YYYY/MM/DD"
+      ? `${year}/${month}/${day}`
+      : `${month}/${day}/${year}`;
+
+  return `${formattedDate} ${hours}:${minutes} ${ampm}`;
 }
 
-/**
- * Format a Date object as DD/MM/YYYY (date only)
- * @param {Date} date - The date to format
- * @returns {string} Formatted date string
- */
-export function formatDate(date) {
+export function formatDate(date, dateOrder = "MM/DD/YYYY") {
   if (!(date instanceof Date)) {
     return "";
   }
@@ -33,7 +28,9 @@ export function formatDate(date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
 
-  return `${month}/${day}/${year}`;
+  return dateOrder === "YYYY/MM/DD"
+    ? `${year}/${month}/${day}`
+    : `${month}/${day}/${year}`;
 }
 
 export function todaysDate() {

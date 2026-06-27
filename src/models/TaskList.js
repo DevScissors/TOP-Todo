@@ -59,12 +59,11 @@ export function displayTaskList() {
     taskTable.classList.add("hidden");
     emptyTaskListMessage();
     return;
-  } else {
-    const emptyListMessage = document.querySelector(".empty-task-list-message");
-    taskTable.classList.remove("hidden");
-    if (emptyListMessage) {
-      emptyListMessage.classList.add("hidden");
-    }
+  }
+  const emptyListMessage = document.querySelector(".empty-task-list-message");
+  taskTable.classList.remove("hidden");
+  if (emptyListMessage) {
+    emptyListMessage.classList.add("hidden");
   }
   checkLocalStorageForTasks();
   for (let i = 0; i < localStorage.length; i++) {

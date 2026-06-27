@@ -4,10 +4,10 @@ import { checkLocalStorageForTasks } from "./services/localStorage.js";
 import { todaysDate } from "./utils/dateFormatter.js";
 
 const navItems = document.querySelectorAll(".menu");
-const modal = document.querySelector("#addNewTask");
-const formModal = document.querySelector(".add-task-form");
+const addTaskModal = document.querySelector("#addNewTask");
+const addTaskForm = document.querySelector(".add-task-form");
 const dueDateInput = document.querySelector(".task-due-by-date-input");
-const addTaskBtn = document.querySelector(".new-task-btn");
+const addTaskBtn = document.querySelector(".add-task-btn");
 const submitTaskBtn = document.querySelector(".submit-task-btn");
 
 navItems.forEach((menuItem) => {
@@ -19,15 +19,18 @@ navItems.forEach((menuItem) => {
 
 addTaskBtn.addEventListener("click", () => {
   dueDateInput.setAttribute("min", todaysDate());
-  modal.showModal();
+  dueDateInput.setAttribute("value", todaysDate());
+  addTaskModal.showModal();
 });
 
-modal.addEventListener("close", () => {
-  formModal.reset();
+addTaskModal.addEventListener("close", () => {
+  addTaskForm.reset();
 });
 
-submitTaskBtn.addEventListener("click", () => {
+addTaskForm.addEventListener("submit", () => {
+  event.preventDefault();
   addTaskToList();
+  addTaskModal.close();
   displayTaskList();
 });
 

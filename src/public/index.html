@@ -10,7 +10,7 @@
       <div class="header-wrapper">
         <div class="header">
           <h1 class="app-title">To Do List</h1>
-          <button type="button" class="new-task-btn">Add Task</button>
+          <button type="button" class="add-task-btn">Add Task</button>
           <dialog id="addNewTask" closedby="any">
             <form action="#" method="dialog" class="add-task-form">
               <label for="taskNameInput">
@@ -49,6 +49,7 @@
                   type="datetime-local"
                   id="dueByInput"
                   class="task-due-by-date-input"
+                  required
                 />
               </label>
               <button type="submit" class="submit-task-btn">Add Task</button>
@@ -56,29 +57,29 @@
           </dialog>
           <dialog id="editTask" closedby="any">
             <form action="#" method="dialog" class="edit-task-form">
-              <label for="taskNameInput">
+              <label for="editTaskNameInput">
                 Task Name:
                 <input
                   type="text"
-                  id="taskNameInput"
-                  class="task-name-input"
+                  id="editTaskNameInput"
+                  class="edit-task-name-input"
                   required
                 />
               </label>
-              <label for="taskCategoryInput">
+              <label for="editTaskCategoryInput">
                 Category:
                 <input
                   type="text"
-                  id="taskCategoryInput"
-                  class="task-category-input"
+                  id="editTaskCategoryInput"
+                  class="edit-task-category-input"
                   required
                 />
               </label>
-              <label for="taskPrioritySelect">
+              <label for="editTaskPrioritySelect">
                 Priority:
                 <select
-                  id="taskPrioritySelect"
-                  class="task-priority-select"
+                  id="editTaskPrioritySelect"
+                  class="edit-task-priority-select"
                   required
                 >
                   <option value="Low">Low</option>
@@ -86,15 +87,16 @@
                   <option value="High">High</option>
                 </select>
               </label>
-              <label for="dueByInput">
+              <label for="editDueByInput">
                 Due By:
                 <input
                   type="datetime-local"
-                  id="dueByInput"
-                  class="task-due-by-date-input"
+                  id="editDueByInput"
+                  class="edit-task-due-by-date-input"
+                  required
                 />
               </label>
-              <button type="submit" class="edit-task-btn">Update Task</button>
+              <button type="submit" class="update-task-btn">Update Task</button>
             </form>
           </dialog>
         </div>

@@ -27,7 +27,7 @@ body {
     grid-column: 2 / 5;
 }
 
-.new-task-btn {
+.add-task-btn {
     background: var(--cell-bg-color);
     color: white;
     font-size: larger;
@@ -38,7 +38,7 @@ body {
     box-shadow: inset 1px 1px white;
 }
 
-.new-task-btn:active {
+.add-task-btn:active {
     filter: drop-shadow(2px 2px 2px white);
     box-shadow: none;
     transform: scale(.95);
