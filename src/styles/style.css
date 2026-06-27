@@ -3,6 +3,7 @@
     --bg-color: #AB978C;
     --bg-color: white;
     --cell-bg-color: #565656;
+    --cell-bg-color-completed: #1c1e1e;
 }
 
 .main-container {
@@ -146,6 +147,11 @@ table tr{
     background-color: var(--cell-bg-color);
     filter: drop-shadow(2px 4px 6px black);
     vertical-align: middle;
+}
+
+.task-completed {
+    background-color: var(--cell-bg-color-completed);
+    text-decoration: line-through;
 }
 
 .task-options-wrapper {

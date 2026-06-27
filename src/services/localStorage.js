@@ -20,8 +20,8 @@ export function addTaskToArchive(taskToArchive) {
   localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
-export function addTaskToLocalStorage(taskItem) {
-  taskList.push(taskItem);
+export function addTaskToLocalStorage(taskToAdd) {
+  taskList.push(taskToAdd);
   localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
@@ -68,4 +68,15 @@ export function editTaskFromLocalStorage(taskToEdit) {
     },
     { once: true },
   );
+}
+
+export function updateStatusInLocalStorage(taskToUpdateStatus) {
+  const task = taskList.find((item) => item.id === taskToUpdateStatus);
+  if (task.status === "Not Completed") {
+    task.status = "Completed";
+  } else {
+    task.status = "Not Completed";
+  }
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+  // displayTaskList();
 }

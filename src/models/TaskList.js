@@ -7,6 +7,7 @@ import {
   checkLocalStorageForExistingTasks,
   clearTaskFromLocalStorage,
   editTaskFromLocalStorage,
+  updateStatusInLocalStorage,
 } from "../services/localStorage.js";
 
 const taskTable = document.querySelector(".todo-list-table");
@@ -67,9 +68,6 @@ export function displayTaskList() {
   const taskListValues = JSON.parse(localStorage.getItem("taskList"));
 
   taskListValues.forEach((task, index) => {
-    // for (let i = 0; i < localStorage.length; i++) {
-    // const key = localStorage.key(i);
-    // const taskValues = JSON.parse(localStorage.getItem(key));
     const taskRow = document.createElement("tr");
     taskRow.classList.add("task-item-row");
     taskRow.setAttribute("data-index", task.id);
@@ -79,6 +77,7 @@ export function displayTaskList() {
 
     const taskCheckboxInput = document.createElement("input");
     taskCheckboxInput.type = "checkbox";
+    taskCheckboxInput.classList.add("checkbox-toggle");
 
     const taskNameCol = document.createElement("td");
     taskNameCol.classList.add("task-name", "table-item");
@@ -120,6 +119,7 @@ export function displayTaskList() {
 
     taskTableBody.appendChild(taskRow);
 
+    const completionToggle = taskRow.querySelector("input.checkbox-toggle");
     const archiveTaskBtn = taskRow.querySelector(".archive-task");
     const deleteTaskBtn = taskRow.querySelector(".delete-task");
     const editTaskBtn = taskRow.querySelector(".edit-task");
@@ -142,6 +142,19 @@ export function displayTaskList() {
         e.currentTarget.closest(".task-item-row").dataset.index;
       editTaskFromLocalStorage(indexOfTaskToEdit);
       displayTaskList();
+    });
+
+    completionToggle.addEventListener("click", (e) => {
+      const rowOfTaskCompleted = e.currentTarget.closest(".task-item-row");
+      const statusOfTaskCompleted = rowOfTaskCompleted.children[5];
+      if (completionToggle.checked) {
+        rowOfTaskCompleted.classList.add("task-completed");
+        statusOfTaskCompleted.textContent = "Completed";
+      } else {
+        statusOfTaskCompleted.textContent = "Not Completed";
+        rowOfTaskCompleted.classList.remove("task-completed");
+      }
+      updateStatusInLocalStorage(rowOfTaskCompleted.dataset.index);
     });
   });
 }
