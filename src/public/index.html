@@ -13,89 +13,73 @@
           <button type="button" class="add-task-btn">Add Task</button>
           <dialog id="addNewTask" closedby="any">
             <form action="#" method="dialog" class="add-task-form">
-              <label for="taskNameInput">
-                Task Name:
-                <input
-                  type="text"
-                  id="taskNameInput"
-                  class="task-name-input"
-                  required
-                />
-              </label>
-              <label for="taskCategoryInput">
-                Category:
-                <input
-                  type="text"
-                  id="taskCategoryInput"
-                  class="task-category-input"
-                  required
-                />
-              </label>
-              <label for="taskPrioritySelect">
-                Priority:
-                <select
-                  id="taskPrioritySelect"
-                  class="task-priority-select"
-                  required
-                >
-                  <option value="Low">Low</option>
-                  <option value="Normal">Normal</option>
-                  <option value="High">High</option>
-                </select>
-              </label>
-              <label for="dueByInput">
-                Due By:
-                <input
-                  type="datetime-local"
-                  id="dueByInput"
-                  class="task-due-by-date-input"
-                  required
-                />
-              </label>
+              <label for="taskNameInput"> Task Name:</label>
+              <input
+                type="text"
+                id="taskNameInput"
+                class="task-name-input"
+                required
+              />
+              <label for="taskCategoryInput"> Category:</label>
+              <input
+                type="text"
+                id="taskCategoryInput"
+                class="task-category-input"
+                required
+              />
+              <label for="taskPrioritySelect"> Priority:</label>
+              <select
+                id="taskPrioritySelect"
+                class="task-priority-select"
+                required
+              >
+                <option value="Low">Low</option>
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
+              </select>
+              <label for="dueByInput"> Due By:</label>
+              <input
+                type="datetime-local"
+                id="dueByInput"
+                class="task-due-by-date-input"
+                required
+              />
               <button type="submit" class="submit-task-btn">Add Task</button>
             </form>
           </dialog>
           <dialog id="editTask" closedby="any">
             <form action="#" method="dialog" class="edit-task-form">
-              <label for="editTaskNameInput">
-                Task Name:
-                <input
-                  type="text"
-                  id="editTaskNameInput"
-                  class="edit-task-name-input"
-                  required
-                />
-              </label>
-              <label for="editTaskCategoryInput">
-                Category:
-                <input
-                  type="text"
-                  id="editTaskCategoryInput"
-                  class="edit-task-category-input"
-                  required
-                />
-              </label>
-              <label for="editTaskPrioritySelect">
-                Priority:
-                <select
-                  id="editTaskPrioritySelect"
-                  class="edit-task-priority-select"
-                  required
-                >
-                  <option value="Low">Low</option>
-                  <option value="Normal">Normal</option>
-                  <option value="High">High</option>
-                </select>
-              </label>
-              <label for="editDueByInput">
-                Due By:
-                <input
-                  type="datetime-local"
-                  id="editDueByInput"
-                  class="edit-task-due-by-date-input"
-                  required
-                />
-              </label>
+              <label for="editTaskNameInput"> Task Name:</label>
+              <input
+                type="text"
+                id="editTaskNameInput"
+                class="edit-task-name-input"
+                required
+              />
+              <label for="editTaskCategoryInput"> Category:</label>
+              <input
+                type="text"
+                id="editTaskCategoryInput"
+                class="edit-task-category-input"
+                required
+              />
+              <label for="editTaskPrioritySelect"> Priority:</label>
+              <select
+                id="editTaskPrioritySelect"
+                class="edit-task-priority-select"
+                required
+              >
+                <option value="Low">Low</option>
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
+              </select>
+              <label for="editDueByInput"> Due By:</label>
+              <input
+                type="datetime-local"
+                id="editDueByInput"
+                class="edit-task-due-by-date-input"
+                required
+              />
               <button type="submit" class="update-task-btn">Update Task</button>
             </form>
           </dialog>
@@ -158,10 +142,8 @@
           <thead class="list-item-categories">
             <tr>
               <th></th>
-              <th class="task-name table-title">
-                <span class="cell-text">Task Name</span>
-              </th>
-              <th class="project-name table-title">Category/Project Name</th>
+              <th class="task-name table-title">Task Name</th>
+              <th class="project-name table-title">Category</th>
               <th class="priority-status table-title">Priority</th>
               <th class="due-by-date table-title">Due By</th>
               <th class="completion-status table-title">Status</th>

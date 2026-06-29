@@ -1,22 +1,23 @@
 :root {
-    --text-color: #E9E6E7;
+    --text-color: white;
     --bg-color: #AB978C;
     --bg-color: white;
-    --cell-bg-color: #565656;
-    --cell-bg-color-completed: #1c1e1e;
+    --cell-bg-color: #05B084;
+    --cell-bg-color-completed: #015A84;
+    --text-shadow-black: 2px 2px 2px black;
 }
 
 .main-container {
     display: grid;
     grid-template: 10vh 5fr / 10vw 5fr;
     min-height: 95vh;
-    background: linear-gradient(gray, transparent);
+    background: linear-gradient(#015A84,#F1EDEA);
 }
 
 .app-title {
     font-size: xx-large;
     color: var(--text-color);
-    filter: drop-shadow(2px 2px 2px black);
+    text-shadow: var(--text-shadow-black);
 }
 
 body {
@@ -37,6 +38,7 @@ body {
     outline-offset: 4px;
     filter: none;
     box-shadow: inset 1px 1px white;
+    text-shadow: var(--text-shadow-black);
 }
 
 .add-task-btn:active {
@@ -86,6 +88,18 @@ a:link, a:visited {
     gap: 20px;
 }
 
+.add-task-form, .edit-task-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 1em;
+    font-size: x-large;
+}
+
+.submit-task-btn, .update-task-btn {
+    grid-column: 1 / span 2;
+    padding: 5px;
+}
+
 .todo-list-table {
     height: fit-content;
     border-spacing: 0 1.5em;
@@ -131,14 +145,14 @@ table th {
     padding: 1em 0;
     color: var(--text-color);
     text-decoration: underline;
-    text-underline-offset: 5px;
-    font-weight: bold;
-    background-color: var(--cell-bg-color);
+    text-underline-offset: 3px;
+    text-shadow: var(--text-shadow-black);
 }
 
-table tbody tr td, table tr {
+.table-item {
+    color: white;
     padding: 1em 0;
-    filter: drop-shadow(2px 2px 2px black);
+    text-shadow: var(--text-shadow-black);
 }
 
 table tr{
@@ -158,6 +172,7 @@ table tr{
     display: flex;
     gap: 10px;
     justify-content: flex-start;
+    padding: 1em 0;
 }
 
 .task-options-wrapper svg {
@@ -165,9 +180,13 @@ table tr{
     fill: var(--text-color);
 }
 
+.task-option {
+    filter: drop-shadow(var(--text-shadow-black));
+}
+
 .task-option:hover {
     transform: scale(1.2);
-    filter: drop-shadow(2px 2px 2px black);
+    text-shadow: var(--text-shadow-black);
     cursor: pointer;
 } 
 
