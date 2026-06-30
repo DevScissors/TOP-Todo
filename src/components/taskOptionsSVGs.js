@@ -1,6 +1,6 @@
 import createSVGNode from "./svg";
 
-export default function taskOptionsSVGs() {
+export default function taskOptionsSVGs(task = {}) {
   const taskOptionsColWrapper = document.createElement("td");
 
   // Archive SVG creation
@@ -15,6 +15,20 @@ export default function taskOptionsSVGs() {
 
   const taskOptionArchivePath = createSVGNode("path", {
     d: "M3,3H21V7H3V3M4,8H20V21H4V8M9.5,11A0.5,0.5 0 0,0 9,11.5V13H15V11.5A0.5,0.5 0 0,0 14.5,11H9.5Z",
+  });
+
+  // Restore SVG creation
+  const taskOptionRestoreLink = document.createElement("a");
+  taskOptionRestoreLink.classList.add("restore-task", "task-option");
+
+  const taskOptionRestoreSVG = createSVGNode("svg", {
+    viewBox: "0 0 24 24",
+  });
+  const taskOptionRestoreTitle = createSVGNode("title");
+  taskOptionRestoreTitle.textContent = "Restore Task";
+
+  const taskOptionRestorePath = createSVGNode("path", {
+    d: "M13,3A9,9 0 0,0 4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z",
   });
 
   // Delete SVG creation
@@ -47,18 +61,29 @@ export default function taskOptionsSVGs() {
 
   // Put title and path inside each SVG, then append SVG to its link
   taskOptionArchiveSVG.append(taskOptionArchiveTitle, taskOptionArchivePath);
+  taskOptionRestoreSVG.append(taskOptionRestoreTitle, taskOptionRestorePath);
   taskOptionDeleteSVG.append(taskOptionDeleteTitle, taskOptionDeletePath);
   taskOptionEditSVG.append(taskOptionEditTitle, taskOptionEditPath);
 
   taskOptionArchiveLink.append(taskOptionArchiveSVG);
+  taskOptionRestoreLink.append(taskOptionRestoreSVG);
   taskOptionDeleteLink.append(taskOptionDeleteSVG);
   taskOptionEditLink.append(taskOptionEditSVG);
 
   taskOptionsColWrapper.classList.add("task-options-wrapper");
-  taskOptionsColWrapper.append(
-    taskOptionArchiveLink,
-    taskOptionDeleteLink,
-    taskOptionEditLink,
-  );
+  if (task?.archived) {
+    taskOptionsColWrapper.append(
+      taskOptionRestoreLink,
+      taskOptionDeleteLink,
+      taskOptionEditLink,
+    );
+  } else {
+    taskOptionsColWrapper.append(
+      taskOptionArchiveLink,
+      taskOptionDeleteLink,
+      taskOptionEditLink,
+    );
+  }
+
   return taskOptionsColWrapper;
 }

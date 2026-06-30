@@ -12,6 +12,19 @@ export function checkLocalStorageForExistingTasks() {
   return true;
 }
 
+export function checkIfTaskArchived(taskId) {
+  const task = taskList.find((item) => item.id === taskId);
+  return Boolean(task?.archived);
+}
+
+export function restoreTaskFromArchive(restoredTask) {
+  const task = taskList.find((item) => item.id === restoredTask);
+  if (!task) return;
+
+  task.archived = false;
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+}
+
 export function addTaskToArchive(taskToArchive) {
   const task = taskList.find((item) => item.id === taskToArchive);
   if (!task) return;

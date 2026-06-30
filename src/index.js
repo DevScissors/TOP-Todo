@@ -4,6 +4,7 @@ import {
   buildCategoryList,
   displayTaskList,
   showCategoryInput,
+  sortByMenuOption,
 } from "./models/TaskList.js";
 import {
   addTaskToLocalStorage,
@@ -24,6 +25,8 @@ navItems.forEach((menuItem) => {
   menuItem.addEventListener("click", (e) => {
     navItems.forEach((nav) => nav.classList.remove("active"));
     e.currentTarget.classList.toggle("active");
+    sortByMenuOption();
+    displayTaskList();
   });
 });
 

@@ -1,6 +1,10 @@
 import ToDo from "./ToDo.js";
 import taskOptionsSVGs from "../components/taskOptionsSVGs.js";
-import { formatDateTime, formatDate } from "../utils/dateFormatter.js";
+import {
+  formatDate,
+  formatDateTime,
+  todaysDate,
+} from "../utils/dateFormatter.js";
 import {
   addTaskToLocalStorage,
   addTaskToArchive,
@@ -9,6 +13,8 @@ import {
   editTaskFromLocalStorage,
   updateStatusInLocalStorage,
   getCategories,
+  taskList,
+  restoreTaskFromArchive,
 } from "../services/localStorage.js";
 
 const taskTable = document.querySelector(".todo-list-table");
@@ -19,6 +25,47 @@ const taskCategorySelection = document.querySelector(".task-category-select");
 const taskNewCategoryInput = document.querySelector(".add-new-category-input");
 const taskDueDateInput = document.querySelector(".task-due-by-date-input");
 const todoListContainer = document.querySelector(".todo-list-container");
+
+function getStoredTasks() {
+  return JSON.parse(localStorage.getItem("taskList")) || [];
+}
+
+export function sortByMenuOption() {
+  const taskListValues = getStoredTasks();
+  const activeMenu = document.querySelector(".menu.active");
+  const activeMenuClass = activeMenu?.classList.value || "";
+
+  switch (true) {
+    case activeMenuClass.includes("today-menu"):
+      return taskListValues.filter((task) => {
+        if (!task?.dueDate || task?.archived === true) {
+          return false;
+        }
+
+        return formatDate(new Date(task.dueDate)) === formatDate(new Date());
+      });
+    case activeMenuClass.includes("upcoming-menu"):
+      return taskListValues.filter((task) => {
+        if (!task?.dueDate || task?.archived === true) {
+          return false;
+        }
+
+        return new Date(task.dueDate) > new Date();
+      });
+    case activeMenuClass.includes("overdue-menu"):
+      return taskListValues.filter((task) => {
+        if (!task?.dueDate || task?.archived === true) {
+          return false;
+        }
+
+        return new Date(task.dueDate) < new Date();
+      });
+    case activeMenuClass.includes("archive-menu"):
+      return taskListValues.filter((task) => task?.archived === true);
+    default:
+      return taskListValues.filter((task) => task?.archived !== true);
+  }
+}
 
 export function addTaskToList() {
   const taskNameValue = taskNameInput.value;
@@ -49,15 +96,18 @@ export function addTaskToList() {
   addTaskToLocalStorage(toDoTask);
 }
 
-function emptyTaskListMessage() {
-  const emptyMessage = document.createElement("div");
-  emptyMessage.classList.add("empty-task-list-message");
-  emptyMessage.style.cssText = "text-align: center; font-size: 36px;";
-  emptyMessage.textContent =
-    "No tasks added yet. I'm sure you have something to do...";
+function emptyTaskListMessage(message) {
+  let emptyMessage = document.querySelector(".empty-task-list-message");
 
-  todoListContainer.appendChild(emptyMessage);
-  return todoListContainer;
+  if (!emptyMessage) {
+    emptyMessage = document.createElement("div");
+    emptyMessage.classList.add("empty-task-list-message");
+    emptyMessage.style.cssText = "text-align: center; font-size: 36px;";
+    todoListContainer.appendChild(emptyMessage);
+  }
+
+  emptyMessage.textContent = message;
+  return emptyMessage;
 }
 
 export function showCategoryInput(newCatValue) {
@@ -113,23 +163,47 @@ export function buildCategoryList() {
 export function displayTaskList() {
   taskTableBody.innerHTML = "";
 
-  // Check if the user has any tasks in local storage, eventually
-  if (!checkLocalStorageForExistingTasks()) {
-    taskTable.classList.add("hidden");
-    emptyTaskListMessage();
-    return;
-  }
+  const taskListValues = sortByMenuOption();
   const emptyListMessage = document.querySelector(".empty-task-list-message");
-  taskTable.classList.remove("hidden");
-  if (emptyListMessage) {
-    emptyListMessage.classList.add("hidden");
+  const activeMenu = document.querySelector(".menu.active");
+  const activeMenuClass = activeMenu?.classList.value || "";
+
+  let emptyMessage = "No tasks added yet. I'm sure you have something to do...";
+
+  switch (true) {
+    case activeMenuClass.includes("today-menu"):
+      emptyMessage = "No tasks are due today!";
+      break;
+    case activeMenuClass.includes("upcoming-menu"):
+      emptyMessage = "No upcoming tasks.";
+      break;
+    case activeMenuClass.includes("overdue-menu"):
+      emptyMessage = "No overdue tasks.";
+      break;
+    case activeMenuClass.includes("archive-menu"):
+      emptyMessage = "No archived tasks.";
+      break;
+    default:
+      emptyMessage = "No tasks added yet. I'm sure you have something to do...";
   }
 
-  const taskListValues = JSON.parse(localStorage.getItem("taskList"));
+  if (!checkLocalStorageForExistingTasks() || taskListValues.length === 0) {
+    taskTable.classList.add("hidden");
+    emptyTaskListMessage(emptyMessage);
+    return;
+  }
+
+  taskTable.classList.remove("hidden");
+  if (emptyListMessage) {
+    emptyListMessage.remove();
+  }
 
   taskListValues.forEach((task, index) => {
     const taskRow = document.createElement("tr");
     taskRow.classList.add("task-item-row");
+    if (task.status === "Completed") {
+      taskRow.classList.add("task-completed");
+    }
     taskRow.setAttribute("data-index", task.id);
 
     const taskColCompletionCheckbox = document.createElement("td");
@@ -138,6 +212,7 @@ export function displayTaskList() {
     const taskCheckboxInput = document.createElement("input");
     taskCheckboxInput.type = "checkbox";
     taskCheckboxInput.classList.add("checkbox-toggle");
+    taskCheckboxInput.checked = task.status === "Completed";
 
     const taskNameCol = document.createElement("td");
     taskNameCol.classList.add("task-name", "table-item");
@@ -174,21 +249,32 @@ export function displayTaskList() {
       taskDueDateCol,
       taskStatusCol,
       taskCreatedDateCol,
-      taskOptionsSVGs(),
+      taskOptionsSVGs(task),
     );
 
     taskTableBody.appendChild(taskRow);
 
     const completionToggle = taskRow.querySelector("input.checkbox-toggle");
-    const archiveTaskBtn = taskRow.querySelector(".archive-task");
     const deleteTaskBtn = taskRow.querySelector(".delete-task");
     const editTaskBtn = taskRow.querySelector(".edit-task");
 
-    archiveTaskBtn.addEventListener("click", (e) => {
-      const taskToArchiveByRow = e.currentTarget.closest(".task-item-row");
-      taskToArchiveByRow.classList.add("archived-task");
-      addTaskToArchive(taskToArchiveByRow.dataset.index);
-    });
+    if (task.archived) {
+      const restoreTaskBtn = taskRow.querySelector(".restore-task");
+      restoreTaskBtn.addEventListener("click", (e) => {
+        const taskToRestoreByRow = e.currentTarget.closest(".task-item-row");
+        taskToRestoreByRow.classList.remove("archived-task");
+        restoreTaskFromArchive(taskToRestoreByRow.dataset.index);
+        displayTaskList();
+      });
+    } else {
+      const archiveTaskBtn = taskRow.querySelector(".archive-task");
+      archiveTaskBtn.addEventListener("click", (e) => {
+        const taskToArchiveByRow = e.currentTarget.closest(".task-item-row");
+        taskToArchiveByRow.classList.add("archived-task");
+        addTaskToArchive(taskToArchiveByRow.dataset.index);
+        displayTaskList();
+      });
+    }
 
     deleteTaskBtn.addEventListener("click", (e) => {
       const indexOfTaskToRemove =
