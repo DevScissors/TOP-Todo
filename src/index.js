@@ -1,8 +1,14 @@
 import "./styles/style.css";
-import { addTaskToList, displayTaskList } from "./models/TaskList.js";
+import {
+  addTaskToList,
+  buildCategoryList,
+  displayTaskList,
+  showCategoryInput,
+} from "./models/TaskList.js";
 import {
   addTaskToLocalStorage,
   checkLocalStorageForTasks,
+  getCategories,
 } from "./services/localStorage.js";
 import { todaysDate } from "./utils/dateFormatter.js";
 
@@ -12,6 +18,7 @@ const addTaskForm = document.querySelector(".add-task-form");
 const dueDateInput = document.querySelector(".task-due-by-date-input");
 const addTaskBtn = document.querySelector(".add-task-btn");
 const submitTaskBtn = document.querySelector(".submit-task-btn");
+const taskAddCategorySelect = document.querySelector(".task-category-select");
 
 navItems.forEach((menuItem) => {
   menuItem.addEventListener("click", (e) => {
@@ -23,7 +30,14 @@ navItems.forEach((menuItem) => {
 addTaskBtn.addEventListener("click", () => {
   dueDateInput.setAttribute("min", todaysDate());
   dueDateInput.setAttribute("value", todaysDate());
+  getCategories();
+  buildCategoryList();
   addTaskModal.showModal();
+});
+
+taskAddCategorySelect.addEventListener("change", (e) => {
+  const addCategory = e.target.value;
+  showCategoryInput(addCategory);
 });
 
 addTaskModal.addEventListener("close", () => {

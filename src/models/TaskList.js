@@ -8,24 +8,34 @@ import {
   clearTaskFromLocalStorage,
   editTaskFromLocalStorage,
   updateStatusInLocalStorage,
+  getCategories,
 } from "../services/localStorage.js";
 
 const taskTable = document.querySelector(".todo-list-table");
 const taskTableBody = document.querySelector("tbody");
 const taskPrioritySelection = document.querySelector(".task-priority-select");
 const taskNameInput = document.querySelector(".task-name-input");
-const taskCategoryInput = document.querySelector(".task-category-input");
+const taskCategorySelection = document.querySelector(".task-category-select");
+const taskNewCategoryInput = document.querySelector(".add-new-category-input");
 const taskDueDateInput = document.querySelector(".task-due-by-date-input");
 const todoListContainer = document.querySelector(".todo-list-container");
 
 export function addTaskToList() {
   const taskNameValue = taskNameInput.value;
-  const taskCategoryValue = taskCategoryInput.value;
   const taskPriorityValue = taskPrioritySelection.value;
   const taskDueDateValue = taskDueDateInput.value;
   const taskDefaultStatusValue = "Not Completed";
   const taskCreatedDate = new Date();
   const taskArchived = false;
+
+  let taskCategoryValue = "";
+  if (taskCategorySelection) {
+    if (taskCategorySelection.value === "Add New Category") {
+      taskCategoryValue = taskNewCategoryInput.value.trim();
+    } else {
+      taskCategoryValue = taskCategorySelection.value;
+    }
+  }
 
   const toDoTask = new ToDo(
     taskNameValue,
@@ -48,6 +58,56 @@ function emptyTaskListMessage() {
 
   todoListContainer.appendChild(emptyMessage);
   return todoListContainer;
+}
+
+export function showCategoryInput(newCatValue) {
+  const addCategoryLabel = document.querySelector(".add-new-category-label");
+  const addCategoryInput = document.querySelector(".add-new-category-input");
+  const isNew = newCatValue === "Add New Category";
+
+  addCategoryLabel.style.display = isNew ? "block" : "none";
+  addCategoryInput.style.display = isNew ? "block" : "none";
+  addCategoryInput.required = isNew;
+  addCategoryInput.disabled = !isNew;
+
+  if (!isNew) {
+    addCategoryInput.value = "";
+  }
+}
+
+export function buildCategoryList() {
+  const categories = getCategories();
+  taskCategorySelection.innerHTML = "";
+
+  if (!categories || categories.length === 0) {
+    const addNewOption = document.createElement("option");
+    addNewOption.value = "Add New Category";
+    addNewOption.textContent = "Add new category";
+    taskCategorySelection.appendChild(addNewOption);
+    taskCategorySelection.value = "Add New Category";
+    showCategoryInput("Add New Category");
+    return;
+  }
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select a category";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  taskCategorySelection.appendChild(placeholder);
+
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    taskCategorySelection.appendChild(option);
+  });
+
+  const addNewOption = document.createElement("option");
+  addNewOption.value = "Add New Category";
+  addNewOption.textContent = "Add new category";
+  taskCategorySelection.appendChild(addNewOption);
+  showCategoryInput("");
 }
 
 export function displayTaskList() {

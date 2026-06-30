@@ -9,7 +9,7 @@
 
 .main-container {
     display: grid;
-    grid-template: 10vh 5fr / 10vw 5fr;
+    grid-template: 150px 5fr / 250px 5fr;
     min-height: 95vh;
     background: linear-gradient(#015A84,#F1EDEA);
 }
@@ -88,6 +88,12 @@ a:link, a:visited {
     gap: 20px;
 }
 
+#addNewTask, #editTask {
+    width: 20vw;
+    border: none;
+    box-shadow: 4px 4px 4px black;
+}
+
 .add-task-form, .edit-task-form {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -129,6 +135,7 @@ table tbody input[type="checkbox"] {
     margin-left: 1em;
     accent-color: white;
     cursor: pointer;
+    filter: drop-shadow(var(--text-shadow-black));
 }
 
 tbody {
@@ -142,7 +149,7 @@ table thead {
 }
 
 table th {
-    padding: 1em 0;
+    padding: 1em;
     color: var(--text-color);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -151,7 +158,7 @@ table th {
 
 .table-item {
     color: white;
-    padding: 1em 0;
+    padding: 1em;
     text-shadow: var(--text-shadow-black);
 }
 
